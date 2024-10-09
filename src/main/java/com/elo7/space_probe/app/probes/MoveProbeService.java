@@ -13,7 +13,7 @@ public class MoveProbeService {
 
     private final Probes probes;
 
-    MoveProbeService(Probes probes){
+    public MoveProbeService(Probes probes){
         this.probes = probes;
     }
 
