@@ -4,6 +4,7 @@ import com.elo7.space_probe.app.planets.FindPlanetService;
 import com.elo7.space_probe.app.probes.CreateProbeService;
 import com.elo7.space_probe.app.probes.FindAllProbeService;
 import com.elo7.space_probe.app.probes.FindProbeService;
+import com.elo7.space_probe.app.probes.MoveProbeService;
 import com.elo7.space_probe.domain.Planet;
 import com.elo7.space_probe.domain.Probe;
 import org.springframework.http.HttpStatus;
@@ -20,14 +21,16 @@ class ProbeController {
     private final FindProbeService findProbeService;
     private final FindPlanetService findPlanetService;
     private final FindAllProbeService findAllProbeService;
+    private final MoveProbeService moveProbeService;
     private final ProbeCreateDTOToModelConverter probeCreateDTOToModelConverter;
     private final ProbeToDtoConverter probeToDtoConverter;
 
-    ProbeController(CreateProbeService createProbeService, FindProbeService findProbeService, FindPlanetService findPlanetService, FindAllProbeService findAllProbeService, ProbeCreateDTOToModelConverter probeCreateDTOToModelConverter, ProbeToDtoConverter probeToDtoConverter) {
+    ProbeController(CreateProbeService createProbeService, FindProbeService findProbeService, FindPlanetService findPlanetService, FindAllProbeService findAllProbeService, MoveProbeService moveProbeService, ProbeCreateDTOToModelConverter probeCreateDTOToModelConverter, ProbeToDtoConverter probeToDtoConverter) {
         this.createProbeService = createProbeService;
         this.findProbeService = findProbeService;
         this.findPlanetService = findPlanetService;
         this.findAllProbeService = findAllProbeService;
+        this.moveProbeService = moveProbeService;
         this.probeCreateDTOToModelConverter = probeCreateDTOToModelConverter;
         this.probeToDtoConverter = probeToDtoConverter;
     }
@@ -56,5 +59,12 @@ class ProbeController {
         );
         Probe createdProbe = createProbeService.execute(probe);
         return probeToDtoConverter.convert(createdProbe);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/{id}/move")
+    ProbeDTO move(@PathVariable("id") Integer id, @RequestBody String commands) {
+        Probe movedProbe = moveProbeService.execute(id, commands);
+        return new ProbeDTO(movedProbe);
     }
 }

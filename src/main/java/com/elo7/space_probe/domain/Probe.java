@@ -73,4 +73,8 @@ public class Probe {
     public Integer getPlanetId() {
         return planet.getId();
     }
+
+    public Direction getDirection() {
+        return direction;
+    }
 }
