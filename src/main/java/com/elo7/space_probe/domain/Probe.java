@@ -1,6 +1,7 @@
 package com.elo7.space_probe.domain;
 
 import com.elo7.space_probe.domain.enums.Direction;
+import com.elo7.space_probe.exceptions.OutOfBoundaryException;
 import jakarta.persistence.*;
 
 @Entity
@@ -35,7 +36,7 @@ public class Probe {
 
     public void moveProbe(){
         if (!planet.verifyIsInPlanetBoundary(position.getX(), position.getY())) {
-            throw new IllegalArgumentException("Movimento fora dos limites do planeta");
+            throw new OutOfBoundaryException("Movimento fora dos limites do planeta");
         }
 
         switch(direction){

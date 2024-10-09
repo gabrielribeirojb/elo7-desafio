@@ -2,7 +2,8 @@ package com.elo7.space_probe.app.probes;
 
 import com.elo7.space_probe.domain.Probe;
 import com.elo7.space_probe.domain.Probes;
-import jakarta.persistence.EntityNotFoundException;
+import com.elo7.space_probe.exceptions.EntityNotFoundException;
+import com.elo7.space_probe.exceptions.InvalidCommandException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -30,7 +31,7 @@ public class MoveProbeService {
                 case 'L' -> probe.turnLeft();
                 case 'R' -> probe.turnRight();
                 case 'M' -> probe.moveProbe();
-                default -> throw new IllegalArgumentException("Comando inválido: " + command);
+                default -> throw new InvalidCommandException("Comando inválido: " + command);
             }
         }
 
