@@ -9,4 +9,6 @@ public interface Planets {
     Optional<Planet> findById(Integer id);
 
     List<Planet> findAll();
+
+    void deleteAll();
 }

@@ -9,4 +9,6 @@ public interface Probes {
     Optional<Probe> findById(Integer id);
 
     List<Probe> findAll();
+
+    void deleteAll();
 }

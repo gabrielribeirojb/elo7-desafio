@@ -29,4 +29,9 @@ public class DataSourceProbeRepository implements Probes {
     public List<Probe> findAll() {
         return repository.findAll();
     }
+
+    @Override
+    public void deleteAll(){
+        repository.deleteAll();
+    }
 }

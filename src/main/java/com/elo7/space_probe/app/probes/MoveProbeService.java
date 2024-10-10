@@ -18,6 +18,10 @@ public class MoveProbeService {
     }
 
     public Probe execute(Integer id, String commands) {
+        if (id == null || commands == null) {
+            throw new IllegalArgumentException("ID e comandos não podem ser nulos");
+        }
+
         Optional<Probe> optionalProbe = probes.findById(id);
 
         if (optionalProbe.isEmpty()) {

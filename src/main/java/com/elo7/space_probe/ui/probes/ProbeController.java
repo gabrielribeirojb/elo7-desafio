@@ -7,6 +7,7 @@ import com.elo7.space_probe.app.probes.FindProbeService;
 import com.elo7.space_probe.app.probes.MoveProbeService;
 import com.elo7.space_probe.domain.Planet;
 import com.elo7.space_probe.domain.Probe;
+import com.elo7.space_probe.exceptions.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/probes")
-class ProbeController {
+public class ProbeController {
 
     private final CreateProbeService createProbeService;
     private final FindProbeService findProbeService;
@@ -52,13 +53,13 @@ class ProbeController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     ProbeDTO create(@RequestBody ProbeCreateDTO probeCreateDTO) {
-        Optional<Planet> planet = findPlanetService.execute(probeCreateDTO.planetId());
-        Probe probe = probeCreateDTOToModelConverter.convert(
-                probeCreateDTO,
-                planet.orElseThrow(RuntimeException::new)
-        );
+        Planet planet = findPlanetService.execute(probeCreateDTO.planetId())
+                .orElseThrow(() -> new EntityNotFoundException("Planeta com ID " + probeCreateDTO.planetId() + " não encontrado"));
+
+        Probe probe = probeCreateDTOToModelConverter.convert(probeCreateDTO, planet);
         Probe createdProbe = createProbeService.execute(probe);
-        return probeToDtoConverter.convert(createdProbe);
+
+        return new ProbeDTO(createdProbe);
     }
 
     @ResponseStatus(HttpStatus.OK)
