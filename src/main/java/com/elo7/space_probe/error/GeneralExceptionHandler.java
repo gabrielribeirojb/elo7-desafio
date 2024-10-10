@@ -1,5 +1,6 @@
 package com.elo7.space_probe.error;
 
+import com.elo7.space_probe.exceptions.CollisionException;
 import com.elo7.space_probe.exceptions.EntityNotFoundException;
 import com.elo7.space_probe.exceptions.InvalidCommandException;
 import com.elo7.space_probe.exceptions.OutOfBoundaryException;
@@ -44,6 +45,17 @@ public class GeneralExceptionHandler {
                 request.getRequestURI()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CollisionException.class)
+    public ResponseEntity<ErrorResponse> handleCollisionException(CollisionException ex, HttpServletRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.CONFLICT.value(),
+                HttpStatus.CONFLICT.getReasonPhrase(),
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(Exception.class)

@@ -7,6 +7,7 @@ import com.elo7.space_probe.app.probes.FindProbeService;
 import com.elo7.space_probe.app.probes.MoveProbeService;
 import com.elo7.space_probe.domain.Planet;
 import com.elo7.space_probe.domain.Probe;
+import com.elo7.space_probe.exceptions.CollisionException;
 import com.elo7.space_probe.exceptions.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -65,7 +66,11 @@ public class ProbeController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{id}/move")
     ProbeDTO move(@PathVariable("id") Integer id, @RequestBody String commands) {
-        Probe movedProbe = moveProbeService.execute(id, commands);
-        return new ProbeDTO(movedProbe);
+        try {
+            Probe movedProbe = moveProbeService.execute(id, commands);
+            return new ProbeDTO(movedProbe);
+        } catch (CollisionException ex) {
+            throw ex;
+        }
     }
 }

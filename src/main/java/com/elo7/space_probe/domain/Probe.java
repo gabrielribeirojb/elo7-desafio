@@ -35,15 +35,36 @@ public class Probe {
     }
 
     public void moveProbe(){
-        if (!planet.verifyIsInPlanetBoundary(position.getX(), position.getY())) {
+        int nextX = getNextX();
+        int nextY = getNextY();
+
+        if (!planet.verifyIsInPlanetBoundary(nextX, nextY)) {
             throw new OutOfBoundaryException("Movimento fora dos limites do planeta");
         }
 
-        switch(direction){
-            case NORTH -> position.setY(position.getY() + 1);
-            case SOUTH -> position.setY(position.getY() - 1);
-            case EAST -> position.setX(position.getX() + 1);
-            case WEST -> position.setX(position.getX() -1);
+        position.setX(nextX);
+        position.setY(nextY);
+    }
+
+    public Integer getNextX() {
+        switch (direction) {
+            case EAST:
+                return position.getX() + 1;
+            case WEST:
+                return position.getX() - 1;
+            default:
+                return position.getX();
+        }
+    }
+
+    public Integer getNextY() {
+        switch (direction) {
+            case NORTH:
+                return position.getY() + 1;
+            case SOUTH:
+                return position.getY() - 1;
+            default:
+                return position.getY();
         }
     }
 
