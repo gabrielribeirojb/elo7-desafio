@@ -9,4 +9,8 @@ public interface Probes {
     Optional<Probe> findById(Integer id);
 
     List<Probe> findAll();
+
+    void deleteAll();
+
+    boolean existsByPlanetAndPosition_XAndPosition_Y(Planet planet, int x, int y);
 }

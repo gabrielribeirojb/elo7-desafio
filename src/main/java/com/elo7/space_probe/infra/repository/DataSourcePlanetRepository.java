@@ -29,4 +29,9 @@ public class DataSourcePlanetRepository implements Planets {
     public List<Planet> findAll() {
         return repository.findAll();
     }
+
+    @Override
+    public void deleteAll(){
+        repository.deleteAll();
+    }
 }

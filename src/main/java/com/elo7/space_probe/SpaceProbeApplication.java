@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EnableJpaRepositories
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.elo7.space_probe")
 public class SpaceProbeApplication {
 
 	public static void main(String[] args) {

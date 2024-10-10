@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Min;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.BiPredicate;
 
 @Entity
 @Table(name = "planet")
@@ -51,5 +52,9 @@ public class Planet {
 
     public @Min(value = 1, message = "'height' must be greater than 0") Integer getHeight() {
         return height;
+    }
+
+    public Boolean verifyIsInPlanetBoundary(Integer x, Integer y) {
+        return x >= 0 && x <= width && y >= 0 && y <= height;
     }
 }
