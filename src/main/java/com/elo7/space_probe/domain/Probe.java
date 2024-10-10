@@ -96,6 +96,10 @@ public class Probe {
         return planet.getId();
     }
 
+    public Planet getPlanet(){
+        return planet;
+    }
+
     public Direction getDirection() {
         return direction;
     }

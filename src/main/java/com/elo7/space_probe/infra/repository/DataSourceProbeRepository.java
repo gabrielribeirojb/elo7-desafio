@@ -1,5 +1,6 @@
 package com.elo7.space_probe.infra.repository;
 
+import com.elo7.space_probe.domain.Planet;
 import com.elo7.space_probe.domain.Probe;
 import com.elo7.space_probe.domain.Probes;
 import org.springframework.stereotype.Repository;
@@ -33,5 +34,10 @@ public class DataSourceProbeRepository implements Probes {
     @Override
     public void deleteAll(){
         repository.deleteAll();
+    }
+
+    @Override
+    public boolean existsByPlanetAndPosition_XAndPosition_Y(Planet planet, int x, int y){
+        return repository.existsByPlanetAndPosition_XAndPosition_Y(planet, x, y);
     }
 }
