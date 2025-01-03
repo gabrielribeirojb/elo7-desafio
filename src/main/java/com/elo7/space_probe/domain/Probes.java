@@ -11,6 +11,4 @@ public interface Probes {
     List<Probe> findAll();
 
     void deleteAll();
-
-    boolean existsByPlanetAndPosition_XAndPosition_Y(Planet planet, int x, int y);
 }

@@ -26,14 +26,14 @@ import static org.mockito.Mockito.mock;
 public class MoveProbeServiceTest {
 
     private Probes probes;
-    private MoveProbeService moveProbeService;
+    private MoveProbeService moveProbeServiceSubject;
     private Planet planet;
     private Probe probe;
 
     @BeforeEach
     void setUp() {
         probes = mock(Probes.class);
-        moveProbeService = new MoveProbeService(probes);
+        moveProbeServiceSubject = new MoveProbeService(probes);
         planet = new Planet("Marte", 5, 5);
         probe = new Probe("Sonda 1", 1, 2, Direction.NORTH, planet);
     }
@@ -43,7 +43,7 @@ public class MoveProbeServiceTest {
         when(probes.findById(1)).thenReturn(Optional.of(probe));
         when(probes.save(any(Probe.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        Probe movedProbe = moveProbeService.execute(1, "LMLMLMLMM");
+        Probe movedProbe = moveProbeServiceSubject.execute(1, "LMLMLMLMM");
 
         assertNotNull(movedProbe, "A sonda movida não deveria ser nula");
         assertEquals(1, movedProbe.getXPosition());
@@ -54,19 +54,19 @@ public class MoveProbeServiceTest {
     @Test
     void shouldThrowEntityNotFoundException() {
         when(probes.findById(1)).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class, () -> moveProbeService.execute(1, "LMLM"));
+        assertThrows(EntityNotFoundException.class, () -> moveProbeServiceSubject.execute(1, "LMLM"));
     }
 
     @Test
     void shouldThrowInvalidCommandException() {
         when(probes.findById(1)).thenReturn(Optional.of(probe));
-        assertThrows(InvalidCommandException.class, () -> moveProbeService.execute(1, "Z"));
+        assertThrows(InvalidCommandException.class, () -> moveProbeServiceSubject.execute(1, "Z"));
     }
 
     @Test
     void shouldThrowOutOfBoundaryException() {
         when(probes.findById(1)).thenReturn(Optional.of(probe));
-        assertThrows(OutOfBoundaryException.class, () -> moveProbeService.execute(1, "MMMMMMMM"));
+        assertThrows(OutOfBoundaryException.class, () -> moveProbeServiceSubject.execute(1, "MMMMMMMM"));
     }
 
 }

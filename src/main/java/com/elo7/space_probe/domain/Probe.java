@@ -1,6 +1,7 @@
 package com.elo7.space_probe.domain;
 
 import com.elo7.space_probe.domain.enums.Direction;
+import com.elo7.space_probe.exceptions.CollisionException;
 import com.elo7.space_probe.exceptions.OutOfBoundaryException;
 import jakarta.persistence.*;
 
@@ -35,37 +36,27 @@ public class Probe {
     }
 
     public void moveProbe(){
-        int nextX = getNextX();
-        int nextY = getNextY();
+        int newX = getXPosition();
+        int newY = getYPosition();
 
-        if (!planet.verifyIsInPlanetBoundary(nextX, nextY)) {
+        switch (direction) {
+            case EAST -> newX += 1;
+            case WEST -> newX -= 1;
+            case NORTH -> newY += 1;
+            case SOUTH -> newY -= 1;
+        }
+
+        Position newPosition = new Position(newX, newY);
+
+        if (!planet.isInPlanetBoundary(newPosition)) {
             throw new OutOfBoundaryException("Movimento fora dos limites do planeta");
         }
 
-        position.setX(nextX);
-        position.setY(nextY);
-    }
-
-    public Integer getNextX() {
-        switch (direction) {
-            case EAST:
-                return position.getX() + 1;
-            case WEST:
-                return position.getX() - 1;
-            default:
-                return position.getX();
+        if(planet.isPositionOccupied(newPosition)){
+            throw new CollisionException("Posição " + newPosition + "está ocupada");
         }
-    }
 
-    public Integer getNextY() {
-        switch (direction) {
-            case NORTH:
-                return position.getY() + 1;
-            case SOUTH:
-                return position.getY() - 1;
-            default:
-                return position.getY();
-        }
+        this.position = newPosition;
     }
 
     public void turnLeft() {
@@ -102,5 +93,9 @@ public class Probe {
 
     public Direction getDirection() {
         return direction;
+    }
+
+    public Position getPosition(){
+        return position;
     }
 }

@@ -25,19 +25,8 @@ public class GeneralExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(InvalidCommandException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidCommandException(InvalidCommandException ex, HttpServletRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                HttpStatus.BAD_REQUEST.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(OutOfBoundaryException.class)
-    public ResponseEntity<ErrorResponse> handleOutOfBoundaryException(OutOfBoundaryException ex, HttpServletRequest request) {
+    @ExceptionHandler({InvalidCommandException.class, OutOfBoundaryException.class})
+    public ResponseEntity<ErrorResponse> handleInvalidCommandException(RuntimeException ex, HttpServletRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),

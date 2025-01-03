@@ -1,12 +1,10 @@
 package com.elo7.space_probe.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.function.BiPredicate;
 
 @Entity
 @Table(name = "planet")
@@ -29,7 +27,8 @@ public class Planet {
     private List<Probe> probes;
 
     @Deprecated // hibernate only
-    public Planet() {}
+    public Planet() {
+    }
 
     public Planet(String name, Integer width, Integer height) {
         this.name = name;
@@ -54,7 +53,11 @@ public class Planet {
         return height;
     }
 
-    public Boolean verifyIsInPlanetBoundary(Integer x, Integer y) {
-        return x >= 0 && x <= width && y >= 0 && y <= height;
+    public Boolean isInPlanetBoundary(Position position) {
+        return position.getX() >= 0 && position.getX() <= width && position.getY() >= 0 && position.getY() <= height;
+    }
+
+    public boolean isPositionOccupied(Position position) {
+        return probes.stream().map(Probe::getPosition).anyMatch(position::equals);
     }
 }
